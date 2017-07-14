@@ -1,0 +1,55 @@
+* データの項目
+- id
+- title
+- description
+- deadline
+- completed
+
+* 機能
+- 一覧取得
+- 個別取得
+- 1 件登録
+- 1 件削除
+- 内容変更
+  - id 絞込
+
+* 設計
+** DB
+   | column      | type         | option                  |
+   |-------------+--------------+-------------------------|
+   | id          | int          | auto_increment, primary |
+   | title       | varchar(128) |                         |
+   | description | varchar(512) |                         |
+   | deadline    | datetime     | uniq                    |
+   | completed   | bool         |                         |
+
+** web/router.ex
+   - api 用ルーティングを追加
+     - 各機能に対してコントローラがあるので、それぞれ URL を割り振る
+   #+begin_src elixir
+   scope "/", Todo do
+     pipe_through :api
+     resources "url", controller_name, only: [:index]
+     ...
+   end
+   #+end_src
+
+** controller
+   - 以下コマンドでリソースの実装をする
+   #+begin_src shell
+   $ mix phoenix.gen.json Todo todos title:string description:string deadline:string completed:boolean
+   #+end_src
+
+*** web/controller/todo_controller.ex
+**** index
+     一覧取得
+**** create
+     1 件登録
+**** show
+     1 件取得
+**** update
+     内容変更
+
+** view
+*** web/controller/todo_view.ex
+    - scope /api で resource /todos を追加

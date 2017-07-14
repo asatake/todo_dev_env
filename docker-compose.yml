@@ -1,0 +1,30 @@
+version: '2'
+services:
+  nginx:
+    build: nginx/
+    container_name: nginx
+    ports:
+      - 8080:80
+    depends_on:
+      - appserver
+    command: /bin/bash -c "nginx -g 'daemon off;'"
+  appserver:
+    build: server/
+    container_name: appserver
+    expose:
+      - 4000
+    volumes:
+      - ./server/src:/srv/src
+    depends_on:
+      - mysql
+    command: /bin/bash -c "mix run --no-halt"
+  mysql:
+    build: mysql/
+    container_name: mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: asa/Test00
+      MYSQL_DATABASE: todo
+    volumes:
+    - ./mysql/settings:/etc/mysql/conf.d
