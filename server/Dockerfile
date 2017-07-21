@@ -48,8 +48,9 @@ COPY ./src/todo/config/config.exs /srv/src/todo/config/config.exs
 COPY ./src/todo/lib/todo/application.ex /srv/src/todo/lib/todo/application.ex
 COPY ./src/todo/lib/todo/schema.ex /srv/src/todo/lib/todo/schema.ex
 RUN mix ecto.gen.migration create_list
-COPY ./src/todo/priv/repo/migrations/* /srv/src/todo/priv/repo/migrations/2020123114081710_create_list.exs
-RUN mix ecto.migrate
+RUN rm /srv/src/todo/priv/repo/migrations/*.exs
+COPY ./src/todo/priv/repo/migrations/* /srv/src/todo/priv/repo/migrations/20201231183639_create_list.exs
 RUN mix ecto.create
+RUN mix ecto.migrate
 COPY ./src/todo/lib /srv/src/todo/lib
 RUN mix compile
