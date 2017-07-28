@@ -5,7 +5,7 @@ defmodule Todo.Repo.Migrations.CreateList do
     create table(:list) do
       add :title, :string, null: false
       add :description, :string
-      add :deadline, :string, unique: true
+      add :deadline, :date, unique: true
       add :completed, :boolean, unique: true, default: false
 
       timestamps()

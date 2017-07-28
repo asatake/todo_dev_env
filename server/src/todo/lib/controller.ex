@@ -21,7 +21,7 @@ defmodule Todo.Controller do
     Repo.all(query)
   end
 
-  def insert(data, conn) do
+  def insert(data) do
     changeset = Lists.changeset(%Lists{},
       %{title: data.title,
         description: data.description,
@@ -29,17 +29,17 @@ defmodule Todo.Controller do
       }
     )
     case Repo.insert(changeset) do
-      {:ok, _} -> Page.render(conn, %{"message": "insert success!"}, 201)
-      {:error, _} -> Page.render(conn, %{"message": "insert error!"}, 500)
+      {:ok, _} -> true
+      {:error, _} -> false
     end
   end
 
-  def delete(id, conn) do
+  def delete(id) do
     case Repo.get(Lists, id) do
-      nil -> Todo.Page.render_404(conn)
+      nil -> :not_found
       record -> case Repo.delete(record) do
-                  {:ok, _} -> Page.render(conn, %{"message": "delete success!"}, 204)
-                  {:error, _} -> Page.render(conn, %{"message": "delete error!"}, 500)
+                  {:ok, _} -> true
+                  {:error, _} -> false
                 end
     end
   end

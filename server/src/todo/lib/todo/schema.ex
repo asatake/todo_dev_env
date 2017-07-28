@@ -7,7 +7,7 @@ defmodule Todo.Lists do
   schema "list" do
     field :title, :string
     field :description, :string
-    field :deadline, :string
+    field :deadline, :date
     field :completed, :boolean, default: false
 
     timestamps()
@@ -16,7 +16,6 @@ defmodule Todo.Lists do
   def changeset(list, params \\ %{}) do
     list
     |> cast(params, [:title, :description, :deadline, :completed])
-    |> validate_required([:title, :description, :deadline])
     |> validate_length(:title, max: 128)
   end
 end

@@ -1,3 +1,4 @@
+#+OPTIONS: toc:nil ^:{}
 * データの項目
 - id
 - title
@@ -20,8 +21,83 @@
    | id          | int          | auto_increment, primary |
    | title       | varchar(128) |                         |
    | description | varchar(512) |                         |
-   | deadline    | datetime     | uniq                    |
+   | deadline    | datetime     |                         |
    | completed   | bool         |                         |
    | inserted_at | datetime     |                         |
    | updated_at  | datetime     |                         |
 
+** lib/todo.ex
+*** 目的
+    - ルーティングさせる
+    - 各機能のルーティングを決め、アプリケーションを呼び出す
+
+*** get "api/todo"
+    - 一覧取得
+
+*** get "api/todo/completed"
+    - 完了したもの一覧を取得
+
+*** get "api/todo/:id"
+    - todo id 絞込検索
+
+*** post "api/todo"
+    - データ 1 件登録
+
+*** delete "api/todo/:id"
+    - id 絞込で 1 件削除
+
+*** put "api/todo/:id"
+    - データ 1 件アップデート
+
+*** match _
+    - その他の url 叩いたら 404
+
+** lib/view.ex
+   - json を作る部分
+
+*** render(conn, data, status)
+    - data と status を Plug のコネクタに返す
+
+*** render_404(conn)
+    - conn に 404 ステータスとメッセージを返す
+      - "Not Found."
+    
+** lib/controller.ex
+   - 各機能の実現
+
+*** show_all()
+    - すべてのデータを取得し、結果を返す
+
+*** show_one(id)
+    - id 絞込で検索し、結果を返す
+
+*** show_completed
+    - completed=1 のものを検索して結果を返す
+
+*** insert(data)
+    - data をデータベースに insert
+    - 成功したら true, 失敗したら false を返す
+
+*** delete(id)
+    - id 指定して delete
+    - 成功したら true, 失敗したら false を返す
+
+*** update(data)
+    - data を使って update
+    - 成功したら true, 失敗したら false を返す
+** lib/todo/application.ex
+   - Plug + Cowboy で HTTP コネクションを作る
+
+*** start(_type, _args)
+    - mix run した際にここが呼ばれている?
+    - ルーティングや DB の repo 情報などを読み込んでプロセスを生成・監視する
+    - Supervisor.start_link で設定を読み込んで監視スタート
+
+    
+** lib/todo/schema.ex
+   - ローカル repo のスキーマ管理
+*** changeset(list, param)
+    - DB に INSERT, UPDATE する際にバリデーションを行うためのメソッド
+    
+** config/config.exs
+   - データベースの接続情報を設定してある

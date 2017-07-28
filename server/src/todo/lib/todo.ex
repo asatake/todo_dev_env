@@ -30,11 +30,18 @@ defmodule Todo.Router do
     deadline = conn.params["deadline"]
     data = %{title: title, description: description, deadline: deadline}
 
-    Todo.Controller.insert(data, conn)
+    case Todo.Controller.insert(data) do
+      true -> Page.render(conn, %{"message": "insert success!"}, 201)
+      false -> Page.render(conn, %{"message": "insert failure!"}, 400)
+    end
   end
 
   delete "/api/todo/:id" do
-    Todo.Controller.delete(id, conn)
+    case Todo.Controller.delete(id) do
+      true -> Page.render(conn, %{"message": "delete success!"}, 204)
+      false -> Page.render(conn, %{"message": "delete failure!"}, 400)
+      :not_found -> Page.render(conn, %{"message": "data not found."}, 404)
+    end
   end
 
   match _ do
