@@ -85,6 +85,8 @@
 *** update(data)
     - data を使って update
     - 成功したら true, 失敗したら false を返す
+
+
 ** lib/todo/application.ex
    - Plug + Cowboy で HTTP コネクションを作る
 
@@ -100,4 +102,4 @@
     - DB に INSERT, UPDATE する際にバリデーションを行うためのメソッド
     
 ** config/config.exs
-   - データベースの接続情報を設定してある
+   - データベースの接続情報を記述する

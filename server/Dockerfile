@@ -1,5 +1,6 @@
 FROM centos:centos7
 LABEL manome <manome@axelmark.co.jp>
+ARG TZ=Asia/Tokyo
 
 RUN yum update -y && yum clean all
 RUN yum reinstall -y glibc-common
@@ -49,8 +50,6 @@ COPY ./src/todo/lib/todo/application.ex /srv/src/todo/lib/todo/application.ex
 COPY ./src/todo/lib/todo/schema.ex /srv/src/todo/lib/todo/schema.ex
 RUN mix ecto.gen.migration create_list
 RUN rm /srv/src/todo/priv/repo/migrations/*.exs
-COPY ./src/todo/priv/repo/migrations/* /srv/src/todo/priv/repo/migrations/20201231183639_create_list.exs
-RUN mix ecto.create
-RUN mix ecto.migrate
+COPY ./src/todo/priv/repo/migrations/* /srv/src/todo/priv/repo/migrations/20170101000000_create_list.exs
 COPY ./src/todo/lib /srv/src/todo/lib
-RUN mix compile
+ENTRYPOINT mix ecto.create && mix ecto.migrate && mix compile && mix run --no-halt

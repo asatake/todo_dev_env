@@ -7,11 +7,10 @@ config :todo, Todo.Repo,
   database: "todo",
   username: "root",
   password: "asa/Test00",
-  hostname: "192.168.99.108"
+  hostname: "db"
 
 config :todo,
   ecto_repos: [Todo.Repo]
-
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this

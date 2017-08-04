@@ -38,7 +38,6 @@ defmodule Todo.Mixfile do
       {:plug, "~> 1.0"},
       {:poison, "~> 3.1"},
       {:timex, "~> 3.1"},
-      {:coverex, "~> 1.4.10", only: :test},
       {:excoveralls, "~> 0.7", only: :test}
     ]
   end
