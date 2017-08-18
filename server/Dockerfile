@@ -45,11 +45,15 @@ RUN mix local.hex --force
 RUN yes | mix local.rebar
 RUN yes | mix deps.get
 RUN mix ecto.gen.repo -r Todo.Repo
+RUN mix ecto.gen.repo -r Todo.TestRepo
 COPY ./src/todo/config/config.exs /srv/src/todo/config/config.exs
 COPY ./src/todo/lib/todo/application.ex /srv/src/todo/lib/todo/application.ex
 COPY ./src/todo/lib/todo/schema.ex /srv/src/todo/lib/todo/schema.ex
-RUN mix ecto.gen.migration create_list
+RUN mix ecto.gen.migration create_list -r Todo.Repo
+RUN mix ecto.gen.migration create_list -r Todo.TestRepo
 RUN rm /srv/src/todo/priv/repo/migrations/*.exs
+RUN rm /srv/src/todo/priv/test_repo/migrations/*.exs
 COPY ./src/todo/priv/repo/migrations/* /srv/src/todo/priv/repo/migrations/20170101000000_create_list.exs
+COPY ./src/todo/priv/test_repo/migrations/* /srv/src/todo/priv/test_repo/migrations/20170101000001_create_list.exs
 COPY ./src/todo/lib /srv/src/todo/lib
-ENTRYPOINT mix ecto.create && mix ecto.migrate && mix compile && mix run --no-halt
+ENTRYPOINT mix ecto.create && mix ecto.migrate && mix compile && /bin/sh

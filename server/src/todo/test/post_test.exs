@@ -1,20 +1,27 @@
 defmodule Todo.PostTest do
   use ExUnit.Case
   use Plug.Test
-  alias Todo.{Lists, Controller, Repo}
+  alias Todo.{Lists, TestRepo}
 
   @valid_data %{title: "test", description: "test data", deadline: "2018-01-01", completed: false}
+
+  setup do
+    %Lists{}
+    |> Lists.changeset(@valid_data)
+    |> TestRepo.insert!
+    :ok
+  end
 
   test "insert valid?" do
     assert {:ok, _} = %Lists{}
     |> Lists.changeset(@valid_data)
-    |> Repo.insert
+    |> TestRepo.insert
   end
 
   test "insert invalid?" do
     catch_error %Lists{}
     |> Lists.changeset(%{})
-    |> Repo.insert
+    |> TestRepo.insert
   end
 
   # test "update title valid?" do

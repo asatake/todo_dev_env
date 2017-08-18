@@ -46,6 +46,6 @@ defmodule Todo.Router do
   end
 
   match _ do
-    Page.render_404(conn)
+    Page.render(conn, %{"message": "Not Found."}, 404)
   end
 end

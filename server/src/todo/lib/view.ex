@@ -6,10 +6,4 @@ defmodule Todo.Page do
     |> put_resp_content_type("application/json")
     |> send_resp(status, Poison.encode!(data))
   end
-
-  def render_404(conn) do
-    conn
-    |> put_resp_content_type("application/json")
-    |> send_resp(404, Poison.encode!(%{"message": "Not Found"}))
-  end
 end

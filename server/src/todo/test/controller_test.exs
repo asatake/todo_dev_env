@@ -5,11 +5,6 @@ defmodule Todo.ControllerTest do
 
   @valid_data %{title: "test", description: "test data", deadline: "2018-01-01", completed: false}
 
-  test "insert validate" do
-    assert @valid_data
-    |> Controller.insert
-  end
-
   test "show_all validate" do
     assert is_list(Controller.show_all)
   end

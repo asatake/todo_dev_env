@@ -12,7 +12,8 @@ defmodule Todo.Application do
     # Define workers and child supervisors to be supervised
     children = [
       plug_adapter.child_spec(:http, Todo.Router, [], [port: 4000]),
-      supervisor(Todo.Repo, [])
+      supervisor(Todo.Repo, []),
+      supervisor(Todo.TestRepo, [])
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
