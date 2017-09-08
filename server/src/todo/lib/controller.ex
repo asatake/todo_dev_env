@@ -34,6 +34,21 @@ defmodule Todo.Controller do
     end
   end
 
+  def update(id, data) do
+    post = %{}
+    if data.title != nil, do: post = Map.merge(post, %{title: data.title})
+    if data.description != nil, do: post = Map.merge(post, %{description: data.description})
+    if data.deadline != nil, do: post = Map.merge(post, %{deadline: data.deadline})
+    if data.completed != nil, do: post = Map.merge(post, %{completed: data.completed})
+
+    case Repo.one!(from l in Lists, where: l.id == id,  select: l)
+    |> Lists.changeset(post)
+    |> Repo.update do
+      {:ok, _} -> true
+      {:error, _} -> false
+    end
+  end
+
   def delete(id) do
     case Repo.get(Lists, id) do
       nil -> :not_found

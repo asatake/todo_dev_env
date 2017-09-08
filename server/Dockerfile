@@ -56,4 +56,4 @@ RUN rm /srv/src/todo/priv/test_repo/migrations/*.exs
 COPY ./src/todo/priv/repo/migrations/* /srv/src/todo/priv/repo/migrations/20170101000000_create_list.exs
 COPY ./src/todo/priv/test_repo/migrations/* /srv/src/todo/priv/test_repo/migrations/20170101000001_create_list.exs
 COPY ./src/todo/lib /srv/src/todo/lib
-ENTRYPOINT mix ecto.create && mix ecto.migrate && mix compile && /bin/sh
+ENTRYPOINT mix ecto.create && mix ecto.migrate && mix compile && mix run --no-halt

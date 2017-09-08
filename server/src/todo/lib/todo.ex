@@ -25,6 +25,19 @@ defmodule Todo.Router do
     Page.render(conn, result, 200)
   end
 
+  put "/api/todo/:id" do
+    title = if conn.params["title"], do: conn.params["title"], else: nil
+    description = if conn.params["description"], do: conn.params["description"], else: nil
+    deadline = if conn.params["deadline"], do: conn.params["deadline"], else: nil
+    completed = if conn.params["completed"], do: conn.params["completed"], else: nil
+    data = %{id: id, title: title, description: description, deadline: deadline, completed: completed}
+
+    case Controller.update(id, data) do
+      true -> Page.render(conn, %{"message": "update success!"}, 204)
+      false -> Page.render(conn, %{"message": "update failure!"}, 409)
+    end
+  end
+
   post "/api/todo" do
     title = conn.params["title"]
     description = conn.params["description"]
@@ -33,14 +46,14 @@ defmodule Todo.Router do
 
     case Controller.insert(data) do
       true -> Page.render(conn, %{"message": "insert success!"}, 201)
-      false -> Page.render(conn, %{"message": "insert failure!"}, 400)
+      false -> Page.render(conn, %{"message": "insert failure!"}, 409)
     end
   end
 
   delete "/api/todo/:id" do
     case Controller.delete(id) do
       true -> Page.render(conn, %{"message": "delete success!"}, 204)
-      false -> Page.render(conn, %{"message": "delete failure!"}, 400)
+      false -> Page.render(conn, %{"message": "delete failure!"}, 409)
       :not_found -> Page.render(conn, %{"message": "data not found."}, 404)
     end
   end
