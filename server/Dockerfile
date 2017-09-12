@@ -1,5 +1,4 @@
 FROM centos:centos7
-LABEL manome <manome@axelmark.co.jp>
 ARG TZ=Asia/Tokyo
 
 RUN yum update -y && yum clean all
